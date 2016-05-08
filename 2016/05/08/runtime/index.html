@@ -82,15 +82,19 @@
 
 
 
-<meta name="description" content="只为找到真正的自己">
-<meta property="og:type" content="website">
+<meta name="description" content="前言runtime的资料网上有很多了，部分有些晦涩难懂，我通过自己的学习方法总结一遍，主要讲一些常用的方法功能，以实用为主，我觉得用到印象才是最深刻的，并且最后两个demo也是MJExtension的实现原理，面试的时候也可以多扯点。
+runtime的资料网上有很多了，部分有些晦涩难懂，我通过自己的学习方法总结一遍，主要讲一些常用的方法功能，以实用为主，我觉得用到印象才是最深刻的，并且最后两个de">
+<meta property="og:type" content="article">
 <meta property="og:title" content="马俊良的小站">
-<meta property="og:url" content="url/index.html">
+<meta property="og:url" content="url/2016/05/08/runtime/index.html">
 <meta property="og:site_name" content="马俊良的小站">
-<meta property="og:description" content="只为找到真正的自己">
+<meta property="og:description" content="前言runtime的资料网上有很多了，部分有些晦涩难懂，我通过自己的学习方法总结一遍，主要讲一些常用的方法功能，以实用为主，我觉得用到印象才是最深刻的，并且最后两个demo也是MJExtension的实现原理，面试的时候也可以多扯点。
+runtime的资料网上有很多了，部分有些晦涩难懂，我通过自己的学习方法总结一遍，主要讲一些常用的方法功能，以实用为主，我觉得用到印象才是最深刻的，并且最后两个de">
+<meta property="og:updated_time" content="2016-05-08T04:34:19.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="马俊良的小站">
-<meta name="twitter:description" content="只为找到真正的自己">
+<meta name="twitter:description" content="前言runtime的资料网上有很多了，部分有些晦涩难懂，我通过自己的学习方法总结一遍，主要讲一些常用的方法功能，以实用为主，我觉得用到印象才是最深刻的，并且最后两个demo也是MJExtension的实现原理，面试的时候也可以多扯点。
+runtime的资料网上有很多了，部分有些晦涩难懂，我通过自己的学习方法总结一遍，主要讲一些常用的方法功能，以实用为主，我觉得用到印象才是最深刻的，并且最后两个de">
 
 
 
@@ -108,7 +112,7 @@
   };
 </script>
 
-  <title> 马俊良的小站 </title>
+  <title>  | 马俊良的小站 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -129,9 +133,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left 
-   page-home 
- ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -198,9 +200,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
   
@@ -221,9 +223,6 @@
             
               
                 
-                <a class="post-title-link" href="/2016/05/08/runtime/" itemprop="url">
-                  未命名
-                </a>
               
             
           </h1>
@@ -263,9 +262,7 @@
       
 
       
-        
-          
-            <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>runtime的资料网上有很多了，部分有些晦涩难懂，我通过自己的学习方法总结一遍，主要讲一些常用的方法功能，以实用为主，我觉得用到印象才是最深刻的，并且最后两个demo也是MJExtension的实现原理，面试的时候也可以多扯点。</p>
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>runtime的资料网上有很多了，部分有些晦涩难懂，我通过自己的学习方法总结一遍，主要讲一些常用的方法功能，以实用为主，我觉得用到印象才是最深刻的，并且最后两个demo也是MJExtension的实现原理，面试的时候也可以多扯点。</p>
 <p>runtime的资料网上有很多了，部分有些晦涩难懂，我通过自己的学习方法总结一遍，主要讲一些常用的方法功能，以实用为主，我觉得用到印象才是最深刻的，并且最后两个demo也是MJExtension的实现原理，面试的时候也可以多扯点。<br>另外runtime的知识还有很多，想要了解更多可以看我翻译的<a href="http://www.jianshu.com/p/158c5d118937" target="_blank" rel="external">官方文档</a>（有点枯燥），本文的demo<a href="https://github.com/XHTeng/XHRuntimeDemo" target="_blank" rel="external">下载地址</a></p>
 <h1 id="什么是runtime？"><a href="#什么是runtime？" class="headerlink" title="什么是runtime？"></a>什么是runtime？</h1><p>runtime 是 OC底层的一套C语言的API（引入 <code>或</code>），编译器最终都会将OC代码转化为运行时代码，通过终端命令编译.m 文件：<code>clang -rewrite-objc xxx.m</code>可以看到编译后的xxx.cpp（C++文件）。</p>
 <p>runtime 是 OC底层的一套C语言的API（引入 <code>或</code>），编译器最终都会将OC代码转化为运行时代码，通过终端命令编译.m 文件：<code>clang -rewrite-objc xxx.m</code>可以看到编译后的xxx.cpp（C++文件）。<br>比如我们创建了一个对象 <code>[[NSObject alloc]init]</code>，最终被转换为几万行代码，截取最关键的一句可以看到底层是通过runtime创建的对象</p>
@@ -438,16 +435,19 @@
 <p>文／滕先洪（简书作者）<br>原文链接：<a href="http://www.jianshu.com/p/ab966e8a82e2" target="_blank" rel="external">http://www.jianshu.com/p/ab966e8a82e2</a></p>
 <p>文／滕先洪（简书作者）<br>原文链接：<a href="http://www.jianshu.com/p/ab966e8a82e2" target="_blank" rel="external">http://www.jianshu.com/p/ab966e8a82e2</a><br>著作权归作者所有，转载请联系作者获得授权，并标注“简书作者”。</p>
 
-          
+      
+    </div>
+
+    <div>
+      
         
       
     </div>
 
     <div>
       
-    </div>
+        
 
-    <div>
       
     </div>
 
@@ -458,16 +458,15 @@
 
       
       
-        <div class="post-eof"></div>
-      
     </footer>
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -475,6 +474,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -494,8 +497,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -531,6 +543,17 @@
 
       </section>
 
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#什么是runtime？"><span class="nav-number">2.</span> <span class="nav-text">什么是runtime？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#如何应用运行时？"><span class="nav-number">3.</span> <span class="nav-text">如何应用运行时？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#下面我通过demo-我一个个来讲解"><span class="nav-number">3.1.</span> <span class="nav-text">下面我通过demo 我一个个来讲解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#一、交换两个方法的实现，拦截系统自带的方法调用功能"><span class="nav-number">3.1.0.1.</span> <span class="nav-text">一、交换两个方法的实现，拦截系统自带的方法调用功能</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#案例1：方法简单的交换"><span class="nav-number">3.1.0.1.0.1.</span> <span class="nav-text">案例1：方法简单的交换</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#案例2：拦截系统方法"><span class="nav-number">3.1.0.1.0.2.</span> <span class="nav-text">案例2：拦截系统方法</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#注意：自定义方法中最后一定要再调用一下系统的方法，让其有加载图片的功能，但是由于方法交换，系统的方法名已经变成了我们自定义的方法名（有点绕，就是用我们的名字能调用系统的方法，用系统的名字能调用我们的方法），这就实现了系统方法的拦截！"><span class="nav-number">3.1.0.1.0.3.</span> <span class="nav-text">注意：自定义方法中最后一定要再调用一下系统的方法，让其有加载图片的功能，但是由于方法交换，系统的方法名已经变成了我们自定义的方法名（有点绕，就是用我们的名字能调用系统的方法，用系统的名字能调用我们的方法），这就实现了系统方法的拦截！</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二、在分类中设置属性，给任何一个对象设置属性"><span class="nav-number">3.1.0.2.</span> <span class="nav-text">二、在分类中设置属性，给任何一个对象设置属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三、获得一个类的所有成员变量"><span class="nav-number">3.1.0.3.</span> <span class="nav-text">三、获得一个类的所有成员变量</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#案例1：获取Person类中所有成员变量的名字和类型"><span class="nav-number">3.1.0.3.0.1.</span> <span class="nav-text">案例1：获取Person类中所有成员变量的名字和类型</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#案例2：利用runtime-获取所有属性来重写归档解档方法"><span class="nav-number">3.1.0.3.0.2.</span> <span class="nav-text">案例2：利用runtime 获取所有属性来重写归档解档方法</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#注意，下面的代码我换了一个方法名（不然会覆盖系统原来的方法！），加了一个忽略属性方法是否被实现的判断，并加上了对父类属性的归解档循环。"><span class="nav-number">3.1.0.3.0.3.</span> <span class="nav-text">注意，下面的代码我换了一个方法名（不然会覆盖系统原来的方法！），加了一个忽略属性方法是否被实现的判断，并加上了对父类属性的归解档循环。</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#案例3：利用runtime-获取所有属性来进行字典转模型"><span class="nav-number">3.1.0.3.0.4.</span> <span class="nav-text">案例3：利用runtime 获取所有属性来进行字典转模型</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
       
 
     </div>
@@ -627,6 +650,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
 
   
 
