@@ -82,19 +82,19 @@
 
 
 
-<meta name="description" content="前言runtime的资料网上有很多了，部分有些晦涩难懂，我通过自己的学习方法总结一遍，主要讲一些常用的方法功能，以实用为主，我觉得用到印象才是最深刻的，并且最后两个demo也是MJExtension的实现原理，面试的时候也可以多扯点。
-runtime的资料网上有很多了，部分有些晦涩难懂，我通过自己的学习方法总结一遍，主要讲一些常用的方法功能，以实用为主，我觉得用到印象才是最深刻的，并且最后两个de">
+<meta name="description" content="前言runtime的资料网上有很多了，部分有些晦涩难懂，我通过自己的学习方法总结一遍，主要讲一些常用的方法功能，以实用为主，我觉得用到印象才是最深刻的，并且最后两个demo也是MJExtension的实现原理，面试的时候也可以多扯点。另外runtime的知识还有很多，想要了解更多可以看我翻译的官方文档（有点枯燥），本文的demo下载地址
+什么是runtime？runtime 是 OC底层的一套C语">
 <meta property="og:type" content="article">
 <meta property="og:title" content="runtime">
 <meta property="og:url" content="url/2016/05/08/runtime/index.html">
 <meta property="og:site_name" content="风车驿站">
-<meta property="og:description" content="前言runtime的资料网上有很多了，部分有些晦涩难懂，我通过自己的学习方法总结一遍，主要讲一些常用的方法功能，以实用为主，我觉得用到印象才是最深刻的，并且最后两个demo也是MJExtension的实现原理，面试的时候也可以多扯点。
-runtime的资料网上有很多了，部分有些晦涩难懂，我通过自己的学习方法总结一遍，主要讲一些常用的方法功能，以实用为主，我觉得用到印象才是最深刻的，并且最后两个de">
-<meta property="og:updated_time" content="2016-05-08T07:00:59.000Z">
+<meta property="og:description" content="前言runtime的资料网上有很多了，部分有些晦涩难懂，我通过自己的学习方法总结一遍，主要讲一些常用的方法功能，以实用为主，我觉得用到印象才是最深刻的，并且最后两个demo也是MJExtension的实现原理，面试的时候也可以多扯点。另外runtime的知识还有很多，想要了解更多可以看我翻译的官方文档（有点枯燥），本文的demo下载地址
+什么是runtime？runtime 是 OC底层的一套C语">
+<meta property="og:updated_time" content="2016-05-08T12:59:42.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="runtime">
-<meta name="twitter:description" content="前言runtime的资料网上有很多了，部分有些晦涩难懂，我通过自己的学习方法总结一遍，主要讲一些常用的方法功能，以实用为主，我觉得用到印象才是最深刻的，并且最后两个demo也是MJExtension的实现原理，面试的时候也可以多扯点。
-runtime的资料网上有很多了，部分有些晦涩难懂，我通过自己的学习方法总结一遍，主要讲一些常用的方法功能，以实用为主，我觉得用到印象才是最深刻的，并且最后两个de">
+<meta name="twitter:description" content="前言runtime的资料网上有很多了，部分有些晦涩难懂，我通过自己的学习方法总结一遍，主要讲一些常用的方法功能，以实用为主，我觉得用到印象才是最深刻的，并且最后两个demo也是MJExtension的实现原理，面试的时候也可以多扯点。另外runtime的知识还有很多，想要了解更多可以看我翻译的官方文档（有点枯燥），本文的demo下载地址
+什么是runtime？runtime 是 OC底层的一套C语">
 
 
 
@@ -262,177 +262,153 @@ runtime的资料网上有很多了，部分有些晦涩难懂，我通过自己�
       
 
       
-        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>runtime的资料网上有很多了，部分有些晦涩难懂，我通过自己的学习方法总结一遍，主要讲一些常用的方法功能，以实用为主，我觉得用到印象才是最深刻的，并且最后两个demo也是MJExtension的实现原理，面试的时候也可以多扯点。</p>
-<p>runtime的资料网上有很多了，部分有些晦涩难懂，我通过自己的学习方法总结一遍，主要讲一些常用的方法功能，以实用为主，我觉得用到印象才是最深刻的，并且最后两个demo也是MJExtension的实现原理，面试的时候也可以多扯点。<br>另外runtime的知识还有很多，想要了解更多可以看我翻译的<a href="http://www.jianshu.com/p/158c5d118937" target="_blank" rel="external">官方文档</a>（有点枯燥），本文的demo<a href="https://github.com/XHTeng/XHRuntimeDemo" target="_blank" rel="external">下载地址</a></p>
-<h1 id="什么是runtime？"><a href="#什么是runtime？" class="headerlink" title="什么是runtime？"></a>什么是runtime？</h1><p>runtime 是 OC底层的一套C语言的API（引入 <code>或</code>），编译器最终都会将OC代码转化为运行时代码，通过终端命令编译.m 文件：<code>clang -rewrite-objc xxx.m</code>可以看到编译后的xxx.cpp（C++文件）。</p>
-<p>runtime 是 OC底层的一套C语言的API（引入 <code>或</code>），编译器最终都会将OC代码转化为运行时代码，通过终端命令编译.m 文件：<code>clang -rewrite-objc xxx.m</code>可以看到编译后的xxx.cpp（C++文件）。<br>比如我们创建了一个对象 <code>[[NSObject alloc]init]</code>，最终被转换为几万行代码，截取最关键的一句可以看到底层是通过runtime创建的对象</p>
-<p>.cpp 文件</p>
-<p>删除掉一些强制转换语句，可以看到调用方法本质就是发消息，<code>[[NSObject alloc]init]</code>语句发了两次消息，第一次发了alloc 消息，第二次发送init 消息。利用这个功能我们可以探究底层，比如block的实现原理。</p>
-<p>删除掉一些强制转换语句，可以看到调用方法本质就是发消息，<code>[[NSObject alloc]init]</code>语句发了两次消息，第一次发了alloc 消息，第二次发送init 消息。利用这个功能我们可以探究底层，比如block的实现原理。<br>需要注意的是，使用<code>objc_msgSend()</code>  <code>sel_registerName()</code>方法需要导入头文件``</p>
-<p>消息机制</p>
-<p>另外利用runtime 可以做一些OC不容易实现的功能</p>
+        <p>前言<br>runtime的资料网上有很多了，部分有些晦涩难懂，我通过自己的学习方法总结一遍，主要讲一些常用的方法功能，以实用为主，我觉得用到印象才是最深刻的，并且最后两个demo也是MJExtension的实现原理，面试的时候也可以多扯点。<br>另外runtime的知识还有很多，想要了解更多可以看我翻译的官方文档（有点枯燥），本文的demo下载地址</p>
+<p>什么是runtime？<br>runtime 是 OC底层的一套C语言的API（引入 <objc runtime.h=""> 或<objc message.h="">），编译器最终都会将OC代码转化为运行时代码，通过终端命令编译.m 文件：clang -rewrite-objc xxx.m可以看到编译后的xxx.cpp（C++文件）。<br>比如我们创建了一个对象 [[NSObject alloc]init]，最终被转换为几万行代码，截取最关键的一句可以看到底层是通过runtime创建的对象</objc></objc></p>
+<p>.cpp 文件<br>删除掉一些强制转换语句，可以看到调用方法本质就是发消息，[[NSObject alloc]init]语句发了两次消息，第一次发了alloc 消息，第二次发送init 消息。利用这个功能我们可以探究底层，比如block的实现原理。<br>需要注意的是，使用objc_msgSend()  sel_registerName()方法需要导入头文件<objc message.h=""></objc></p>
+<p>消息机制<br>另外利用runtime 可以做一些OC不容易实现的功能</p>
+<p>动态交换两个方法的实现（特别是交换系统自带的方法）<br>动态添加对象的成员变量和成员方法<br>获得某个类的所有成员方法、所有成员变量<br>如何应用运行时？<br>1.将某些OC代码转为运行时代码，探究底层，比如block的实现原理（上边已讲到）；<br>2.拦截系统自带的方法调用（Swizzle 黑魔法），比如拦截imageNamed:、viewDidLoad、alloc；<br>3.实现分类也可以增加属性；<br>4.实现NSCoding的自动归档和自动解档；<br>5.实现字典和模型的自动转换。</p>
+<p>下面我通过demo 我一个个来讲解<br>一、交换两个方法的实现，拦截系统自带的方法调用功能<br>需要用到的方法 <objc runtime.h=""></objc></p>
+<p>获得某个类的类方法<br>Method class_getClassMethod(Class cls , SEL name)<br>获得某个类的实例对象方法<br>Method class_getInstanceMethod(Class cls , SEL name)<br>交换两个方法的实现<br>void method_exchangeImplementations(Method m1 , Method m2)<br>案例1：方法简单的交换<br>创建一个Person类，类中实现以下两个类方法，并在.h 文件中声明</p>
 <ul>
-<li>动态交换两个方法的实现（特别是交换系统自带的方法）</li>
-<li>动态添加对象的成员变量和成员方法</li>
-<li>获得某个类的所有成员方法、所有成员变量</li>
-</ul>
-<h1 id="如何应用运行时？"><a href="#如何应用运行时？" class="headerlink" title="如何应用运行时？"></a>如何应用运行时？</h1><p>1.将某些OC代码转为运行时代码，探究底层，比如block的实现原理（上边已讲到）；</p>
-<p>1.将某些OC代码转为运行时代码，探究底层，比如block的实现原理（上边已讲到）；<br>2.拦截系统自带的方法调用（Swizzle 黑魔法），比如拦截imageNamed:、viewDidLoad、alloc；</p>
-<p>1.将某些OC代码转为运行时代码，探究底层，比如block的实现原理（上边已讲到）；<br>2.拦截系统自带的方法调用（Swizzle 黑魔法），比如拦截imageNamed:、viewDidLoad、alloc；<br>3.实现分类也可以增加属性；</p>
-<p>1.将某些OC代码转为运行时代码，探究底层，比如block的实现原理（上边已讲到）；<br>2.拦截系统自带的方法调用（Swizzle 黑魔法），比如拦截imageNamed:、viewDidLoad、alloc；<br>3.实现分类也可以增加属性；<br>4.实现NSCoding的自动归档和自动解档；</p>
-<p>1.将某些OC代码转为运行时代码，探究底层，比如block的实现原理（上边已讲到）；<br>2.拦截系统自带的方法调用（Swizzle 黑魔法），比如拦截imageNamed:、viewDidLoad、alloc；<br>3.实现分类也可以增加属性；<br>4.实现NSCoding的自动归档和自动解档；<br>5.实现字典和模型的自动转换。</p>
-<h2 id="下面我通过demo-我一个个来讲解"><a href="#下面我通过demo-我一个个来讲解" class="headerlink" title="下面我通过demo 我一个个来讲解"></a>下面我通过demo 我一个个来讲解</h2><h4 id="一、交换两个方法的实现，拦截系统自带的方法调用功能"><a href="#一、交换两个方法的实现，拦截系统自带的方法调用功能" class="headerlink" title="一、交换两个方法的实现，拦截系统自带的方法调用功能"></a>一、交换两个方法的实现，拦截系统自带的方法调用功能</h4><blockquote>
-<p>需要用到的方法 ``</p>
-<ul>
-<li><p>获得某个类的类方法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;   Method class_getClassMethod(Class cls , SEL name)</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+<li><p>(void)run {<br>NSLog(@”跑”);<br>}</p>
+</li>
+<li><p>(void)study {<br>NSLog(@”学习”);<br>}<br>控制器中调用，则先打印跑，后打印学习</p>
 </li>
 </ul>
-</blockquote>
-<p>&gt;</p>
-<blockquote>
+<p>[Person run];<br>[Person study];<br>下面通过runtime 实现方法交换，类方法用class_getClassMethod ，对象方法用class_getInstanceMethod</p>
+<p>// 获取两个类的类方法<br>Method m1 = class_getClassMethod([Person class], @selector(run));<br>Method m2 = class_getClassMethod([Person class], @selector(study));<br>// 开始交换方法实现<br>method_exchangeImplementations(m1, m2);<br>// 交换后，先打印学习，再打印跑！<br>[Person run];<br>[Person study];<br>案例2：拦截系统方法<br>需求：比如iOS6 升级 iOS7 后需要版本适配，根据不同系统使用不同样式图片（拟物化和扁平化），如何通过不去手动一个个修改每个UIImage的imageNamed：方法就可以实现为该方法中加入版本判断语句？<br>步骤：<br>1、为UIImage建一个分类（UIImage+Category）<br>2、在分类中实现一个自定义方法，方法中写要在系统方法中加入的语句，比如版本判断</p>
 <ul>
-<li><p>获得某个类的实例对象方法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;   Method class_getInstanceMethod(Class cls , SEL name)</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+<li><p>(UIImage <em>)xh_imageNamed:(NSString </em>)name {<br>double version = [[UIDevice currentDevice].systemVersion doubleValue];<br>if (version &gt;= 7.0) {<br>// 如果系统版本是7.0以上，使用另外一套文件名结尾是‘_os7’的扁平化图片<br>name = [name stringByAppendingString:@”_os7”];<br>}<br>return [UIImage xh_imageNamed:name];<br>}<br>3、分类中重写UIImage的load方法，实现方法的交换（只要能让其执行一次方法交换语句，load再合适不过了）</p>
+</li>
+<li><p>(void)load {<br>// 获取两个类的类方法<br>Method m1 = class_getClassMethod([UIImage class], @selector(imageNamed:));<br>Method m2 = class_getClassMethod([UIImage class], @selector(xh_imageNamed:));<br>// 开始交换方法实现<br>method_exchangeImplementations(m1, m2);<br>}<br>注意：自定义方法中最后一定要再调用一下系统的方法，让其有加载图片的功能，但是由于方法交换，系统的方法名已经变成了我们自定义的方法名（有点绕，就是用我们的名字能调用系统的方法，用系统的名字能调用我们的方法），这就实现了系统方法的拦截！<br>利用以上思路，我们还可以给 NSObject 添加分类，统计创建了多少个对象，给控制器添加分类，统计有创建了多少个控制器，特别是公司需求总变的时候，在一些原有控件或模块上添加一个功能，建议使用该方法！<br>二、在分类中设置属性，给任何一个对象设置属性<br>众所周知，分类中是无法设置属性的，如果在分类的声明中写@property 只能为其生成get 和 set 方法的声明，但无法生成成员变量，就是虽然点语法能调用出来，但程序执行后会crash，有人会想到使用全局变量呢？比如这样：</p>
 </li>
 </ul>
-</blockquote>
-<p>&gt;</p>
-<blockquote>
+<p>int _age;</p>
 <ul>
-<li><p>交换两个方法的实现</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;   void method_exchangeImplementations(Method m1 , Method m2)</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+<li><p>(int )age {<br>return _age;<br>}</p>
+</li>
+<li><p>(void)setAge:(int)age {<br>_age = age;<br>}<br>但是全局变量程序整个执行过程中内存中只有一份，我们创建多个对象修改其属性值都会修改同一个变量，这样就无法保证像属性一样每个对象都拥有其自己的属性值。这时我们就需要借助runtime为分类增加属性的功能了。</p>
 </li>
 </ul>
-</blockquote>
-<h6 id="案例1：方法简单的交换"><a href="#案例1：方法简单的交换" class="headerlink" title="案例1：方法简单的交换"></a>案例1：方法简单的交换</h6><p>创建一个Person类，类中实现以下两个类方法，并在.h 文件中声明</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">+ (void)run &#123;</span><br><span class="line">NSLog(@&quot;跑&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">+ (void)study &#123;</span><br><span class="line">NSLog(@&quot;学习&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>控制器中调用，则先打印跑，后打印学习</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[Person run];</span><br><span class="line">[Person study];</span><br></pre></td></tr></table></figure>
-<p>下面通过runtime 实现方法交换，类方法用<code>class_getClassMethod</code> ，对象方法用<code>class_getInstanceMethod</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 获取两个类的类方法</span><br><span class="line">Method m1 = class_getClassMethod([Person class], @selector(run));</span><br><span class="line">Method m2 = class_getClassMethod([Person class], @selector(study));</span><br><span class="line">// 开始交换方法实现</span><br><span class="line">method_exchangeImplementations(m1, m2);</span><br><span class="line">// 交换后，先打印学习，再打印跑！</span><br><span class="line">[Person run];</span><br><span class="line">[Person study];</span><br></pre></td></tr></table></figure>
-<h6 id="案例2：拦截系统方法"><a href="#案例2：拦截系统方法" class="headerlink" title="案例2：拦截系统方法"></a>案例2：拦截系统方法</h6><blockquote>
-<p>需求：比如iOS6 升级 iOS7 后需要版本适配，根据不同系统使用不同样式图片（拟物化和扁平化），如何通过不去手动一个个修改每个UIImage的imageNamed：方法就可以实现为该方法中加入版本判断语句？</p>
-</blockquote>
-<p>步骤：</p>
-<p>步骤：<br>1、为UIImage建一个分类（UIImage+Category）</p>
-<p>步骤：<br>1、为UIImage建一个分类（UIImage+Category）<br>2、在分类中实现一个自定义方法，方法中写要在系统方法中加入的语句，比如版本判断</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">+ (UIImage *)xh_imageNamed:(NSString *)name &#123;</span><br><span class="line">double version = [[UIDevice currentDevice].systemVersion doubleValue];</span><br><span class="line">if (version &gt;= 7.0) &#123;</span><br><span class="line">// 如果系统版本是7.0以上，使用另外一套文件名结尾是‘_os7’的扁平化图片</span><br><span class="line">name = [name stringByAppendingString:@&quot;_os7&quot;];</span><br><span class="line">&#125;</span><br><span class="line">return [UIImage xh_imageNamed:name];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>3、分类中重写UIImage的load方法，实现方法的交换（只要能让其执行一次方法交换语句，load再合适不过了）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">+ (void)load &#123;</span><br><span class="line">// 获取两个类的类方法</span><br><span class="line">Method m1 = class_getClassMethod([UIImage class], @selector(imageNamed:));</span><br><span class="line">Method m2 = class_getClassMethod([UIImage class], @selector(xh_imageNamed:));</span><br><span class="line">// 开始交换方法实现</span><br><span class="line">method_exchangeImplementations(m1, m2);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<h6 id="注意：自定义方法中最后一定要再调用一下系统的方法，让其有加载图片的功能，但是由于方法交换，系统的方法名已经变成了我们自定义的方法名（有点绕，就是用我们的名字能调用系统的方法，用系统的名字能调用我们的方法），这就实现了系统方法的拦截！"><a href="#注意：自定义方法中最后一定要再调用一下系统的方法，让其有加载图片的功能，但是由于方法交换，系统的方法名已经变成了我们自定义的方法名（有点绕，就是用我们的名字能调用系统的方法，用系统的名字能调用我们的方法），这就实现了系统方法的拦截！" class="headerlink" title="注意：自定义方法中最后一定要再调用一下系统的方法，让其有加载图片的功能，但是由于方法交换，系统的方法名已经变成了我们自定义的方法名（有点绕，就是用我们的名字能调用系统的方法，用系统的名字能调用我们的方法），这就实现了系统方法的拦截！"></a>注意：自定义方法中最后一定要再调用一下系统的方法，让其有加载图片的功能，但是由于方法交换，系统的方法名已经变成了我们自定义的方法名（有点绕，就是用我们的名字能调用系统的方法，用系统的名字能调用我们的方法），这就实现了系统方法的拦截！</h6><p>利用以上思路，我们还可以给 NSObject 添加分类，统计创建了多少个对象，给控制器添加分类，统计有创建了多少个控制器，特别是公司需求总变的时候，在一些原有控件或模块上添加一个功能，建议使用该方法！</p>
-</blockquote>
-<h4 id="二、在分类中设置属性，给任何一个对象设置属性"><a href="#二、在分类中设置属性，给任何一个对象设置属性" class="headerlink" title="二、在分类中设置属性，给任何一个对象设置属性"></a>二、在分类中设置属性，给任何一个对象设置属性</h4><p>众所周知，分类中是无法设置属性的，如果在分类的声明中写@property 只能为其生成get 和 set 方法的声明，但无法生成成员变量，就是虽然点语法能调用出来，但程序执行后会crash，有人会想到使用全局变量呢？比如这样：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">int _age;</span><br><span class="line"></span><br><span class="line">- (int )age &#123;</span><br><span class="line">return _age;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)setAge:(int)age &#123;</span><br><span class="line">_age = age;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>但是全局变量程序整个执行过程中内存中只有一份，我们创建多个对象修改其属性值都会修改同一个变量，这样就无法保证像属性一样每个对象都拥有其自己的属性值。这时我们就需要借助runtime为分类增加属性的功能了。</p>
-<blockquote>
 <p>需要用到的方法 <objc runtime.h=""></objc></p>
+<p>set方法，将值value 跟对象object 关联起来（将值value 存储到对象object 中）<br>参数 object：给哪个对象设置属性<br>参数 key：一个属性对应一个Key，将来可以通过key取出这个存储的值，key 可以是任何类型：double、int 等，建议用char 可以节省字节<br>参数 value：给属性设置的值<br>参数policy：存储策略 （assign 、copy 、 retain就是strong）<br>void objc_setAssociatedObject(id object , const void <em>key ,id value ,objc_AssociationPolicy policy)<br>利用参数key 将对象object中存储的对应值取出来<br>id objc_getAssociatedObject(id object , const void </em>key)<br>步骤：<br>1、创建一个分类，比如给任何一个对象都添加一个name属性，就是NSObject添加分类（NSObject+Category）<br>2、先在.h 中@property 声明出get 和 set 方法，方便点语法调用</p>
+<p>@property(nonatomic,copy)NSString *name;<br>3、在.m 中重写set 和 get 方法，内部利用runtime 给属性赋值和取值</p>
+<p>char nameKey;</p>
 <ul>
-<li><p>set方法，将值value 跟对象object 关联起来（将值value 存储到对象object 中）</p>
-<p>​</p>
-<p>参数 object：给哪个对象设置属性</p>
-<p>​</p>
-<p>参数 key：一个属性对应一个Key，将来可以通过key取出这个存储的值，key 可以是任何类型：double、int 等，建议用char 可以节省字节</p>
-<p>​</p>
-<p>参数 value：给属性设置的值</p>
-<p>​</p>
-<p>参数policy：存储策略 （assign 、copy 、 retain就是strong）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;   void objc_setAssociatedObject(id object , const void *key ,id value ,objc_AssociationPolicy policy)</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+<li><p>(void)setName:(NSString *)name {<br>// 将某个值跟某个对象关联起来，将某个值存储到某个对象中<br>objc_setAssociatedObject(self, &amp;nameKey, name, OBJC_ASSOCIATION_COPY_NONATOMIC);<br>}</p>
+</li>
+<li><p>(NSString *)name {<br>return objc_getAssociatedObject(self, &amp;nameKey);<br>}<br>三、获得一个类的所有成员变量<br>最典型的用法就是一个对象在归档和解档的 encodeWithCoder和initWithCoder:方法中需要该对象所有的属性进行decodeObjectForKey: 和 encodeObject:，通过runtime我们声明中无论写多少个属性，都不需要再修改实现中的代码了。</p>
 </li>
 </ul>
-</blockquote>
-<p>&gt;</p>
-<blockquote>
-<ul>
-<li><p>利用参数key 将对象object中存储的对应值取出来</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;   id objc_getAssociatedObject(id object , const void *key)</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</blockquote>
-<p>步骤：</p>
-<p>步骤：<br>1、创建一个分类，比如给任何一个对象都添加一个name属性，就是NSObject添加分类（NSObject+Category）</p>
-<p>步骤：<br>1、创建一个分类，比如给任何一个对象都添加一个name属性，就是NSObject添加分类（NSObject+Category）<br>2、先在.h 中@property 声明出get 和 set 方法，方便点语法调用</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property(nonatomic,copy)NSString *name;</span><br></pre></td></tr></table></figure>
-<p>3、在.m 中重写set 和 get 方法，内部利用runtime 给属性赋值和取值</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">char nameKey;</span><br><span class="line"></span><br><span class="line">- (void)setName:(NSString *)name &#123;</span><br><span class="line">// 将某个值跟某个对象关联起来，将某个值存储到某个对象中</span><br><span class="line">objc_setAssociatedObject(self, &amp;nameKey, name, OBJC_ASSOCIATION_COPY_NONATOMIC);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (NSString *)name &#123;</span><br><span class="line">return objc_getAssociatedObject(self, &amp;nameKey);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="三、获得一个类的所有成员变量"><a href="#三、获得一个类的所有成员变量" class="headerlink" title="三、获得一个类的所有成员变量"></a>三、获得一个类的所有成员变量</h4><p>最典型的用法就是一个对象在归档和解档的 encodeWithCoder和initWithCoder:方法中需要该对象所有的属性进行decodeObjectForKey: 和 encodeObject:，通过runtime我们声明中无论写多少个属性，都不需要再修改实现中的代码了。</p>
-<blockquote>
 <p>需要用到的方法 <objc runtime.h=""></objc></p>
+<p>获得某个类的所有成员变量（outCount 会返回成员变量的总数）<br>参数：<br>1、哪个类<br>2、放一个接收值的地址，用来存放属性的个数<br>3、返回值：存放所有获取到的属性，通过下面两个方法可以调出名字和类型<br>Ivar <em>class_copyIvarList(Class cls , unsigned int </em>outCount)<br>获得成员变量的名字<br>const char <em>ivar_getName(Ivar v)<br>获得成员变量的类型<br>const char </em>ivar_getTypeEndcoding(Ivar v)<br>案例1：获取Person类中所有成员变量的名字和类型<br>unsigned int outCount = 0;<br>Ivar *ivars = class_copyIvarList([Person class], &amp;outCount);</p>
+<p>// 遍历所有成员变量<br>for (int i = 0; i &lt; outCount; i++) {<br>// 取出i位置对应的成员变量<br>Ivar ivar = ivars[i];<br>const char <em>name = ivar_getName(ivar);<br>const char </em>type = ivar_getTypeEncoding(ivar);<br>NSLog(@”成员变量名：%s 成员变量类型：%s”,name,type);<br>}<br>// 注意释放内存！<br>free(ivars);<br>案例2：利用runtime 获取所有属性来重写归档解档方法<br>// 设置不需要归解档的属性</p>
 <ul>
-<li><p>获得某个类的所有成员变量（outCount 会返回成员变量的总数）</p>
-<p>​</p>
-<p>参数：</p>
-<p>​</p>
-<p>1、哪个类</p>
-<p>​</p>
-<p>2、放一个接收值的地址，用来存放属性的个数</p>
-<p>​</p>
-<p>3、返回值：存放所有获取到的属性，通过下面两个方法可以调出名字和类型</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;   Ivar *class_copyIvarList(Class cls , unsigned int *outCount)</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+<li>(NSArray *)ignoredNames {<br>return @[@”_aaa”,@”_bbb”,@”_ccc”];<br>}</li>
+</ul>
+<p>// 解档方法</p>
+<ul>
+<li>(instancetype)initWithCoder:(NSCoder <em>)aDecoder {<br>if (self = [super initWithCoder:aDecoder]) {<br>// 获取所有成员变量<br>unsigned int outCount = 0;<br>Ivar </em>ivars = class_copyIvarList([self class], &amp;outCount);</li>
+</ul>
+<p>for (int i = 0; i &lt; outCount; i++) {<br>Ivar ivar = ivars[i];<br>// 将每个成员变量名转换为NSString对象类型<br>NSString *key = [NSString stringWithUTF8String:ivar_getName(ivar)];</p>
+<p>// 忽略不需要解档的属性<br>if ([[self ignoredNames] containsObject:key]) {<br>continue;<br>}</p>
+<p>// 根据变量名解档取值，无论是什么类型<br>id value = [aDecoder decodeObjectForKey:key];<br>// 取出的值再设置给属性<br>[self setValue:value forKey:key];<br>// 这两步就相当于以前的 self.age = [aDecoder decodeObjectForKey:@”_age”];<br>}<br>free(ivars);<br>}<br>return self;<br>}</p>
+<p>// 归档调用方法</p>
+<ul>
+<li>(void)encodeWithCoder:(NSCoder <em>)aCoder {<br>// 获取所有成员变量<br>unsigned int outCount = 0;<br>Ivar </em>ivars = class_copyIvarList([self class], &amp;outCount);<br>for (int i = 0; i &lt; outCount; i++) {<br>Ivar ivar = ivars[i];<br>// 将每个成员变量名转换为NSString对象类型<br>NSString *key = [NSString stringWithUTF8String:ivar_getName(ivar)];</li>
+</ul>
+<p>// 忽略不需要归档的属性<br>if ([[self ignoredNames] containsObject:key]) {<br>continue;<br>}</p>
+<p>// 通过成员变量名，取出成员变量的值<br>id value = [self valueForKeyPath:key];<br>// 再将值归档<br>[aCoder encodeObject:value forKey:key];<br>// 这两步就相当于 [aCoder encodeObject:@(self.age) forKey:@”_age”];<br>}<br>free(ivars);<br>}<br>依据上面的原理我们就可以给NSObject做一个分类，让我们不需要每次都写这么一长串代码，只要实现一小段代码就可以让一个对象具有归解档的能力。</p>
+<p>注意，下面的代码我换了一个方法名（不然会覆盖系统原来的方法！），加了一个忽略属性方法是否被实现的判断，并加上了对父类属性的归解档循环。<br>NSObject+Extension.h</p>
+<p>#import <foundation foundation.h=""></foundation></p>
+<p>@interface NSObject (Extension)</p>
+<ul>
+<li>(NSArray *)ignoredNames;</li>
+<li>(void)encode:(NSCoder *)aCoder;</li>
+<li>(void)decode:(NSCoder *)aDecoder;</li>
+</ul>
+<p>@end<br>NSObject+Extension.m</p>
+<p>#import “NSObject+Extension.h”</p>
+<p>#import <objc runtime.h=""></objc></p>
+<p>@implementation NSObject (Extension)</p>
+<ul>
+<li>(void)decode:(NSCoder *)aDecoder {<br>// 一层层父类往上查找，对父类的属性执行归解档方法<br>Class c = self.class;<br>while (c &amp;&amp;c != [NSObject class]) {</li>
+</ul>
+<p>unsigned int outCount = 0;<br>Ivar <em>ivars = class_copyIvarList(c, &amp;outCount);<br>for (int i = 0; i &lt; outCount; i++) {<br>Ivar ivar = ivars[i];<br>NSString </em>key = [NSString stringWithUTF8String:ivar_getName(ivar)];</p>
+<p>// 如果有实现该方法再去调用<br>if ([self respondsToSelector:@selector(ignoredNames)]) {<br>if ([[self ignoredNames] containsObject:key]) continue;<br>}</p>
+<p>id value = [aDecoder decodeObjectForKey:key];<br>[self setValue:value forKey:key];<br>}<br>free(ivars);<br>c = [c superclass];<br>}</p>
+<p>}</p>
+<ul>
+<li>(void)encode:(NSCoder *)aCoder {<br>// 一层层父类往上查找，对父类的属性执行归解档方法<br>Class c = self.class;<br>while (c &amp;&amp;c != [NSObject class]) {</li>
+</ul>
+<p>unsigned int outCount = 0;<br>Ivar <em>ivars = class_copyIvarList([self class], &amp;outCount);<br>for (int i = 0; i &lt; outCount; i++) {<br>Ivar ivar = ivars[i];<br>NSString </em>key = [NSString stringWithUTF8String:ivar_getName(ivar)];</p>
+<p>// 如果有实现该方法再去调用<br>if ([self respondsToSelector:@selector(ignoredNames)]) {<br>if ([[self ignoredNames] containsObject:key]) continue;<br>}</p>
+<p>id value = [self valueForKeyPath:key];<br>[aCoder encodeObject:value forKey:key];<br>}<br>free(ivars);<br>c = [c superclass];<br>}<br>}<br>@end<br>上面分类使用方法：在需要归解档的对象中实现下面方法即可：</p>
+<p>// 设置需要忽略的属性</p>
+<ul>
+<li>(NSArray *)ignoredNames {<br>return @[@”bone”];<br>}</li>
+</ul>
+<p>// 在系统方法内来调用我们的方法</p>
+<ul>
+<li><p>(instancetype)initWithCoder:(NSCoder *)aDecoder {<br>if (self = [super init]) {<br>[self decode:aDecoder];<br>}<br>return self;<br>}</p>
+</li>
+<li><p>(void)encodeWithCoder:(NSCoder *)aCoder {<br>[self encode:aCoder];<br>}<br>这样看来，我们每次又要写同样的代码，我们可以将归解档两个方法封装为宏，在需要的地方一句宏搞定，如果有不需要归解档的属性就实现ignoredNames 方法，具体可以看我的demo，这个也是MJExtension中那个一句宏就可以解决归解档的实现原理。</p>
 </li>
 </ul>
-</blockquote>
-<p>&gt;</p>
-<blockquote>
-<ul>
-<li><p>获得成员变量的名字</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;   const char *ivar_getName(Ivar v)</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</blockquote>
-<p>&gt;</p>
-<blockquote>
-<ul>
-<li><p>获得成员变量的类型</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;   const char *ivar_getTypeEndcoding(Ivar v)</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</blockquote>
-<h6 id="案例1：获取Person类中所有成员变量的名字和类型"><a href="#案例1：获取Person类中所有成员变量的名字和类型" class="headerlink" title="案例1：获取Person类中所有成员变量的名字和类型"></a>案例1：获取Person类中所有成员变量的名字和类型</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">unsigned int outCount = 0;</span><br><span class="line">Ivar *ivars = class_copyIvarList([Person class], &amp;outCount);</span><br><span class="line"></span><br><span class="line">// 遍历所有成员变量</span><br><span class="line">for (int i = 0; i &lt; outCount; i++) &#123;</span><br><span class="line">// 取出i位置对应的成员变量</span><br><span class="line">Ivar ivar = ivars[i];</span><br><span class="line">const char *name = ivar_getName(ivar);</span><br><span class="line">const char *type = ivar_getTypeEncoding(ivar);</span><br><span class="line">NSLog(@&quot;成员变量名：%s 成员变量类型：%s&quot;,name,type);</span><br><span class="line">&#125;</span><br><span class="line">// 注意释放内存！</span><br><span class="line">free(ivars);</span><br></pre></td></tr></table></figure>
-<h6 id="案例2：利用runtime-获取所有属性来重写归档解档方法"><a href="#案例2：利用runtime-获取所有属性来重写归档解档方法" class="headerlink" title="案例2：利用runtime 获取所有属性来重写归档解档方法"></a>案例2：利用runtime 获取所有属性来重写归档解档方法</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">// 设置不需要归解档的属性</span><br><span class="line">- (NSArray *)ignoredNames &#123;</span><br><span class="line">return @[@&quot;_aaa&quot;,@&quot;_bbb&quot;,@&quot;_ccc&quot;];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 解档方法</span><br><span class="line">- (instancetype)initWithCoder:(NSCoder *)aDecoder &#123;</span><br><span class="line">if (self = [super initWithCoder:aDecoder]) &#123;</span><br><span class="line">// 获取所有成员变量</span><br><span class="line">unsigned int outCount = 0;</span><br><span class="line">Ivar *ivars = class_copyIvarList([self class], &amp;outCount);</span><br><span class="line"></span><br><span class="line">for (int i = 0; i &lt; outCount; i++) &#123;</span><br><span class="line">Ivar ivar = ivars[i];</span><br><span class="line">// 将每个成员变量名转换为NSString对象类型</span><br><span class="line">NSString *key = [NSString stringWithUTF8String:ivar_getName(ivar)];</span><br><span class="line"></span><br><span class="line">// 忽略不需要解档的属性</span><br><span class="line">if ([[self ignoredNames] containsObject:key]) &#123;</span><br><span class="line">continue;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 根据变量名解档取值，无论是什么类型</span><br><span class="line">id value = [aDecoder decodeObjectForKey:key];</span><br><span class="line">// 取出的值再设置给属性</span><br><span class="line">[self setValue:value forKey:key];</span><br><span class="line">// 这两步就相当于以前的 self.age = [aDecoder decodeObjectForKey:@&quot;_age&quot;];</span><br><span class="line">&#125;</span><br><span class="line">free(ivars);</span><br><span class="line">&#125;</span><br><span class="line">return self;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 归档调用方法</span><br><span class="line">- (void)encodeWithCoder:(NSCoder *)aCoder &#123;</span><br><span class="line">// 获取所有成员变量</span><br><span class="line">unsigned int outCount = 0;</span><br><span class="line">Ivar *ivars = class_copyIvarList([self class], &amp;outCount);</span><br><span class="line">for (int i = 0; i &lt; outCount; i++) &#123;</span><br><span class="line">Ivar ivar = ivars[i];</span><br><span class="line">// 将每个成员变量名转换为NSString对象类型</span><br><span class="line">NSString *key = [NSString stringWithUTF8String:ivar_getName(ivar)];</span><br><span class="line"></span><br><span class="line">// 忽略不需要归档的属性</span><br><span class="line">if ([[self ignoredNames] containsObject:key]) &#123;</span><br><span class="line">continue;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 通过成员变量名，取出成员变量的值</span><br><span class="line">id value = [self valueForKeyPath:key];</span><br><span class="line">// 再将值归档</span><br><span class="line">[aCoder encodeObject:value forKey:key];</span><br><span class="line">// 这两步就相当于 [aCoder encodeObject:@(self.age) forKey:@&quot;_age&quot;];</span><br><span class="line">&#125;</span><br><span class="line">free(ivars);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>依据上面的原理我们就可以给NSObject做一个分类，让我们不需要每次都写这么一长串代码，只要实现一小段代码就可以让一个对象具有归解档的能力。</p>
-<h6 id="注意，下面的代码我换了一个方法名（不然会覆盖系统原来的方法！），加了一个忽略属性方法是否被实现的判断，并加上了对父类属性的归解档循环。"><a href="#注意，下面的代码我换了一个方法名（不然会覆盖系统原来的方法！），加了一个忽略属性方法是否被实现的判断，并加上了对父类属性的归解档循环。" class="headerlink" title="注意，下面的代码我换了一个方法名（不然会覆盖系统原来的方法！），加了一个忽略属性方法是否被实现的判断，并加上了对父类属性的归解档循环。"></a>注意，下面的代码我换了一个方法名（不然会覆盖系统原来的方法！），加了一个忽略属性方法是否被实现的判断，并加上了对父类属性的归解档循环。</h6><blockquote>
-<p>NSObject+Extension.h</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line"></span><br><span class="line">@interface NSObject (Extension)</span><br><span class="line"></span><br><span class="line">- (NSArray *)ignoredNames;</span><br><span class="line">- (void)encode:(NSCoder *)aCoder;</span><br><span class="line">- (void)decode:(NSCoder *)aDecoder;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>NSObject+Extension.m</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;NSObject+Extension.h&quot;</span><br><span class="line">#import &lt;objc/runtime.h&gt;</span><br><span class="line"></span><br><span class="line">@implementation NSObject (Extension)</span><br><span class="line"></span><br><span class="line">- (void)decode:(NSCoder *)aDecoder &#123;</span><br><span class="line">// 一层层父类往上查找，对父类的属性执行归解档方法</span><br><span class="line">Class c = self.class;</span><br><span class="line">while (c &amp;&amp;c != [NSObject class]) &#123;</span><br><span class="line"></span><br><span class="line">unsigned int outCount = 0;</span><br><span class="line">Ivar *ivars = class_copyIvarList(c, &amp;outCount);</span><br><span class="line">for (int i = 0; i &lt; outCount; i++) &#123;</span><br><span class="line">Ivar ivar = ivars[i];</span><br><span class="line">NSString *key = [NSString stringWithUTF8String:ivar_getName(ivar)];</span><br><span class="line"></span><br><span class="line">// 如果有实现该方法再去调用</span><br><span class="line">if ([self respondsToSelector:@selector(ignoredNames)]) &#123;</span><br><span class="line">if ([[self ignoredNames] containsObject:key]) continue;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">id value = [aDecoder decodeObjectForKey:key];</span><br><span class="line">[self setValue:value forKey:key];</span><br><span class="line">&#125;</span><br><span class="line">free(ivars);</span><br><span class="line">c = [c superclass];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)encode:(NSCoder *)aCoder &#123;</span><br><span class="line">// 一层层父类往上查找，对父类的属性执行归解档方法</span><br><span class="line">Class c = self.class;</span><br><span class="line">while (c &amp;&amp;c != [NSObject class]) &#123;</span><br><span class="line"></span><br><span class="line">unsigned int outCount = 0;</span><br><span class="line">Ivar *ivars = class_copyIvarList([self class], &amp;outCount);</span><br><span class="line">for (int i = 0; i &lt; outCount; i++) &#123;</span><br><span class="line">Ivar ivar = ivars[i];</span><br><span class="line">NSString *key = [NSString stringWithUTF8String:ivar_getName(ivar)];</span><br><span class="line"></span><br><span class="line">// 如果有实现该方法再去调用</span><br><span class="line">if ([self respondsToSelector:@selector(ignoredNames)]) &#123;</span><br><span class="line">if ([[self ignoredNames] containsObject:key]) continue;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">id value = [self valueForKeyPath:key];</span><br><span class="line">[aCoder encodeObject:value forKey:key];</span><br><span class="line">&#125;</span><br><span class="line">free(ivars);</span><br><span class="line">c = [c superclass];</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
-<p>上面分类使用方法：在需要归解档的对象中实现下面方法即可：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">// 设置需要忽略的属性</span><br><span class="line">- (NSArray *)ignoredNames &#123;</span><br><span class="line">return @[@&quot;bone&quot;];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 在系统方法内来调用我们的方法</span><br><span class="line">- (instancetype)initWithCoder:(NSCoder *)aDecoder &#123;</span><br><span class="line">if (self = [super init]) &#123;</span><br><span class="line">[self decode:aDecoder];</span><br><span class="line">&#125;</span><br><span class="line">return self;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)encodeWithCoder:(NSCoder *)aCoder &#123;</span><br><span class="line">[self encode:aCoder];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这样看来，我们每次又要写同样的代码，我们可以将归解档两个方法封装为宏，在需要的地方一句宏搞定，如果有不需要归解档的属性就实现ignoredNames 方法，具体可以看我的demo，这个也是MJExtension中那个一句宏就可以解决归解档的实现原理。</p>
-<h6 id="案例3：利用runtime-获取所有属性来进行字典转模型"><a href="#案例3：利用runtime-获取所有属性来进行字典转模型" class="headerlink" title="案例3：利用runtime 获取所有属性来进行字典转模型"></a>案例3：利用runtime 获取所有属性来进行字典转模型</h6><p>以往我们都是利用KVC进行字典转模型，但是它还是有一定的局限性，例如：模型属性和键值对对应不上会crash（虽然可以重写setValue:forUndefinedKey:方法防止报错），模型属性是一个对象或者数组时不好处理等问题，所以无论是效率还是功能上，利用runtime进行字典转模型都是比较好的选择。</p>
-<blockquote>
-<p>字典转模型我们需要考虑三种特殊情况：</p>
-<p>字典转模型我们需要考虑三种特殊情况：<br>1.当字典的key和模型的属性匹配不上</p>
-<p>字典转模型我们需要考虑三种特殊情况：<br>1.当字典的key和模型的属性匹配不上<br>2.模型中嵌套模型（模型属性是另外一个模型对象）</p>
-<p>字典转模型我们需要考虑三种特殊情况：<br>1.当字典的key和模型的属性匹配不上<br>2.模型中嵌套模型（模型属性是另外一个模型对象）<br>3.数组中装着模型（模型的属性是一个数组，数组中是一个个模型对象）</p>
-</blockquote>
-<p>根据上面的三种特殊情况，我们一个个处理，先是字典的key和模型的属性不对应的情况。</p>
-<p>根据上面的三种特殊情况，我们一个个处理，先是字典的key和模型的属性不对应的情况。<br>不对应有两种，一种是字典的键值大于模型属性数量，这时候我们不需要任何处理，因为runtime是先遍历模型所有属性，再去字典中根据属性名找对应值进行赋值，多余的键值对也当然不会去看了；另外一种是模型属性数量大于字典的键值对，这时候由于属性没有对应值会被赋值为nil，就会导致crash，我们只需加一个判断即可，JSON数据和sample如下：</p>
+<p>案例3：利用runtime 获取所有属性来进行字典转模型<br>以往我们都是利用KVC进行字典转模型，但是它还是有一定的局限性，例如：模型属性和键值对对应不上会crash（虽然可以重写setValue:forUndefinedKey:方法防止报错），模型属性是一个对象或者数组时不好处理等问题，所以无论是效率还是功能上，利用runtime进行字典转模型都是比较好的选择。</p>
+<p>字典转模型我们需要考虑三种特殊情况：<br>1.当字典的key和模型的属性匹配不上<br>2.模型中嵌套模型（模型属性是另外一个模型对象）<br>3.数组中装着模型（模型的属性是一个数组，数组中是一个个模型对象）<br>根据上面的三种特殊情况，我们一个个处理，先是字典的key和模型的属性不对应的情况。<br>不对应有两种，一种是字典的键值大于模型属性数量，这时候我们不需要任何处理，因为runtime是先遍历模型所有属性，再去字典中根据属性名找对应值进行赋值，多余的键值对也当然不会去看了；另外一种是模型属性数量大于字典的键值对，这时候由于属性没有对应值会被赋值为nil，就会导致crash，我们只需加一个判断即可，JSON数据和sample如下：</p>
 <p>JSON数据</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">- (void)setDict:(NSDictionary *)dict &#123;</span><br><span class="line"></span><br><span class="line">Class c = self.class;</span><br><span class="line">while (c &amp;&amp;c != [NSObject class]) &#123;</span><br><span class="line"></span><br><span class="line">unsigned int outCount = 0;</span><br><span class="line">Ivar *ivars = class_copyIvarList(c, &amp;outCount);</span><br><span class="line">for (int i = 0; i &lt; outCount; i++) &#123;</span><br><span class="line">Ivar ivar = ivars[i];</span><br><span class="line">NSString *key = [NSString stringWithUTF8String:ivar_getName(ivar)];</span><br><span class="line"></span><br><span class="line">// 成员变量名转为属性名（去掉下划线 _ ）</span><br><span class="line">key = [key substringFromIndex:1];</span><br><span class="line">// 取出字典的值</span><br><span class="line">id value = dict[key];</span><br><span class="line"></span><br><span class="line">// 如果模型属性数量大于字典键值对数理，模型属性会被赋值为nil而报错</span><br><span class="line">if (value == nil) continue;</span><br><span class="line"></span><br><span class="line">// 将字典中的值设置到模型上</span><br><span class="line">[self setValue:value forKeyPath:key];</span><br><span class="line">&#125;</span><br><span class="line">free(ivars);</span><br><span class="line">c = [c superclass];</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>第二种情况是模型的属性是另外一个模型对象</p>
-<p>JSON数据</p>
-<p>这时候我们就需要利用runtime的ivar_getTypeEncoding 方法获取模型对象类型，对该模型对象类型再进行字典转模型，也就是进行递归，需要注意的是我们要排除系统的对象类型，例如<code>NSString</code>，下面的方法中我添加了一个类方法方便递归。</p>
+<ul>
+<li>(void)setDict:(NSDictionary *)dict {</li>
+</ul>
+<p>Class c = self.class;<br>while (c &amp;&amp;c != [NSObject class]) {</p>
+<p>unsigned int outCount = 0;<br>Ivar <em>ivars = class_copyIvarList(c, &amp;outCount);<br>for (int i = 0; i &lt; outCount; i++) {<br>Ivar ivar = ivars[i];<br>NSString </em>key = [NSString stringWithUTF8String:ivar_getName(ivar)];</p>
+<p>// 成员变量名转为属性名（去掉下划线 _ ）<br>key = [key substringFromIndex:1];<br>// 取出字典的值<br>id value = dict[key];</p>
+<p>// 如果模型属性数量大于字典键值对数理，模型属性会被赋值为nil而报错<br>if (value == nil) continue;</p>
+<p>// 将字典中的值设置到模型上<br>[self setValue:value forKeyPath:key];<br>}<br>free(ivars);<br>c = [c superclass];<br>}<br>}<br>第二种情况是模型的属性是另外一个模型对象</p>
+<p>JSON数据<br>这时候我们就需要利用runtime的ivar_getTypeEncoding 方法获取模型对象类型，对该模型对象类型再进行字典转模型，也就是进行递归，需要注意的是我们要排除系统的对象类型，例如NSString，下面的方法中我添加了一个类方法方便递归。</p>
 <p>打印可以看到各属性类型</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;NSObject+JSONExtension.h&quot;</span><br><span class="line">#import &lt;objc/runtime.h&gt;</span><br><span class="line"></span><br><span class="line">@implementation NSObject (JSONExtension)</span><br><span class="line"></span><br><span class="line">- (void)setDict:(NSDictionary *)dict &#123;</span><br><span class="line"></span><br><span class="line">Class c = self.class;</span><br><span class="line">while (c &amp;&amp;c != [NSObject class]) &#123;</span><br><span class="line"></span><br><span class="line">unsigned int outCount = 0;</span><br><span class="line">Ivar *ivars = class_copyIvarList(c, &amp;outCount);</span><br><span class="line">for (int i = 0; i &lt; outCount; i++) &#123;</span><br><span class="line">Ivar ivar = ivars[i];</span><br><span class="line">NSString *key = [NSString stringWithUTF8String:ivar_getName(ivar)];</span><br><span class="line"></span><br><span class="line">// 成员变量名转为属性名（去掉下划线 _ ）</span><br><span class="line">key = [key substringFromIndex:1];</span><br><span class="line">// 取出字典的值</span><br><span class="line">id value = dict[key];</span><br><span class="line"></span><br><span class="line">// 如果模型属性数量大于字典键值对数理，模型属性会被赋值为nil而报错</span><br><span class="line">if (value == nil) continue;</span><br><span class="line"></span><br><span class="line">// 获得成员变量的类型</span><br><span class="line">NSString *type = [NSString stringWithUTF8String:ivar_getTypeEncoding(ivar)];</span><br><span class="line"></span><br><span class="line">// 如果属性是对象类型</span><br><span class="line">NSRange range = [type rangeOfString:@&quot;@&quot;];</span><br><span class="line">if (range.location != NSNotFound) &#123;</span><br><span class="line">// 那么截取对象的名字（比如@&quot;Dog&quot;，截取为Dog）</span><br><span class="line">type = [type substringWithRange:NSMakeRange(2, type.length - 3)];</span><br><span class="line">// 排除系统的对象类型</span><br><span class="line">if (![type hasPrefix:@&quot;NS&quot;]) &#123;</span><br><span class="line">// 将对象名转换为对象的类型，将新的对象字典转模型（递归）</span><br><span class="line">Class class = NSClassFromString(type);</span><br><span class="line">value = [class objectWithDict:value];</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 将字典中的值设置到模型上</span><br><span class="line">[self setValue:value forKeyPath:key];</span><br><span class="line">&#125;</span><br><span class="line">free(ivars);</span><br><span class="line">c = [c superclass];</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">+ (instancetype )objectWithDict:(NSDictionary *)dict &#123;</span><br><span class="line">NSObject *obj = [[self alloc]init];</span><br><span class="line">[obj setDict:dict];</span><br><span class="line">return obj;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>第三种情况是模型的属性是一个数组，数组中是一个个模型对象，例如下面的数据我就可以通过<code>books[0].name</code>获取到<code>C语言程序设计</code></p>
-<p>JSON数据</p>
-<p>我们既然能获取到属性类型，那就可以拦截到模型的那个数组属性，进而对数组中每个模型遍历并字典转模型，但是我们不知道数组中的模型都是什么类型，我们可以声明一个方法，该方法目的不是让其调用，而是让其实现并返回模型的类型。</p>
-<p>我们既然能获取到属性类型，那就可以拦截到模型的那个数组属性，进而对数组中每个模型遍历并字典转模型，但是我们不知道数组中的模型都是什么类型，我们可以声明一个方法，该方法目的不是让其调用，而是让其实现并返回模型的类型。<br>这块语言可能解释不太清楚，可以参考我的demo，直接运行即可。</p>
-<blockquote>
-<p>NSObject+JSONExtension.h</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 返回数组中都是什么类型的模型对象</span><br><span class="line">- (NSString *)arrayObjectClass ;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>NSObject+JSONExtension.m</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;NSObject+JSONExtension.h&quot;</span><br><span class="line">#import &lt;objc/runtime.h&gt;</span><br><span class="line"></span><br><span class="line">@implementation NSObject (JSONExtension)</span><br><span class="line"></span><br><span class="line">- (void)setDict:(NSDictionary *)dict &#123;</span><br><span class="line"></span><br><span class="line">Class c = self.class;</span><br><span class="line">while (c &amp;&amp;c != [NSObject class]) &#123;</span><br><span class="line"></span><br><span class="line">unsigned int outCount = 0;</span><br><span class="line">Ivar *ivars = class_copyIvarList(c, &amp;outCount);</span><br><span class="line">for (int i = 0; i &lt; outCount; i++) &#123;</span><br><span class="line">Ivar ivar = ivars[i];</span><br><span class="line">NSString *key = [NSString stringWithUTF8String:ivar_getName(ivar)];</span><br><span class="line"></span><br><span class="line">// 成员变量名转为属性名（去掉下划线 _ ）</span><br><span class="line">key = [key substringFromIndex:1];</span><br><span class="line">// 取出字典的值</span><br><span class="line">id value = dict[key];</span><br><span class="line"></span><br><span class="line">// 如果模型属性数量大于字典键值对数理，模型属性会被赋值为nil而报错</span><br><span class="line">if (value == nil) continue;</span><br><span class="line"></span><br><span class="line">// 获得成员变量的类型</span><br><span class="line">NSString *type = [NSString stringWithUTF8String:ivar_getTypeEncoding(ivar)];</span><br><span class="line"></span><br><span class="line">// 如果属性是对象类型</span><br><span class="line">NSRange range = [type rangeOfString:@&quot;@&quot;];</span><br><span class="line">if (range.location != NSNotFound) &#123;</span><br><span class="line">// 那么截取对象的名字（比如@&quot;Dog&quot;，截取为Dog）</span><br><span class="line">type = [type substringWithRange:NSMakeRange(2, type.length - 3)];</span><br><span class="line">// 排除系统的对象类型</span><br><span class="line">if (![type hasPrefix:@&quot;NS&quot;]) &#123;</span><br><span class="line">// 将对象名转换为对象的类型，将新的对象字典转模型（递归）</span><br><span class="line">Class class = NSClassFromString(type);</span><br><span class="line">value = [class objectWithDict:value];</span><br><span class="line"></span><br><span class="line">&#125;else if ([type isEqualToString:@&quot;NSArray&quot;]) &#123;</span><br><span class="line"></span><br><span class="line">// 如果是数组类型，将数组中的每个模型进行字典转模型，先创建一个临时数组存放模型</span><br><span class="line">NSArray *array = (NSArray *)value;</span><br><span class="line">NSMutableArray *mArray = [NSMutableArray array];</span><br><span class="line"></span><br><span class="line">// 获取到每个模型的类型</span><br><span class="line">id class ;</span><br><span class="line">if ([self respondsToSelector:@selector(arrayObjectClass)]) &#123;</span><br><span class="line"></span><br><span class="line">NSString *classStr = [self arrayObjectClass];</span><br><span class="line">class = NSClassFromString(classStr);</span><br><span class="line">&#125;</span><br><span class="line">// 将数组中的所有模型进行字典转模型</span><br><span class="line">for (int i = 0; i &lt; array.count; i++) &#123;</span><br><span class="line">[mArray addObject:[class objectWithDict:value[i]]];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">value = mArray;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 将字典中的值设置到模型上</span><br><span class="line">[self setValue:value forKeyPath:key];</span><br><span class="line">&#125;</span><br><span class="line">free(ivars);</span><br><span class="line">c = [c superclass];</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">+ (instancetype )objectWithDict:(NSDictionary *)dict &#123;</span><br><span class="line">NSObject *obj = [[self alloc]init];</span><br><span class="line">[obj setDict:dict];</span><br><span class="line">return obj;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
-<p>文／滕先洪（简书作者）</p>
-<p>文／滕先洪（简书作者）<br>原文链接：<a href="http://www.jianshu.com/p/ab966e8a82e2" target="_blank" rel="external">http://www.jianshu.com/p/ab966e8a82e2</a></p>
+<p>#import “NSObject+JSONExtension.h”</p>
+<p>#import <objc runtime.h=""></objc></p>
+<p>@implementation NSObject (JSONExtension)</p>
+<ul>
+<li>(void)setDict:(NSDictionary *)dict {</li>
+</ul>
+<p>Class c = self.class;<br>while (c &amp;&amp;c != [NSObject class]) {</p>
+<p>unsigned int outCount = 0;<br>Ivar <em>ivars = class_copyIvarList(c, &amp;outCount);<br>for (int i = 0; i &lt; outCount; i++) {<br>Ivar ivar = ivars[i];<br>NSString </em>key = [NSString stringWithUTF8String:ivar_getName(ivar)];</p>
+<p>// 成员变量名转为属性名（去掉下划线 _ ）<br>key = [key substringFromIndex:1];<br>// 取出字典的值<br>id value = dict[key];</p>
+<p>// 如果模型属性数量大于字典键值对数理，模型属性会被赋值为nil而报错<br>if (value == nil) continue;</p>
+<p>// 获得成员变量的类型<br>NSString *type = [NSString stringWithUTF8String:ivar_getTypeEncoding(ivar)];</p>
+<p>// 如果属性是对象类型<br>NSRange range = [type rangeOfString:@”@”];<br>if (range.location != NSNotFound) {<br>// 那么截取对象的名字（比如@”Dog”，截取为Dog）<br>type = [type substringWithRange:NSMakeRange(2, type.length - 3)];<br>// 排除系统的对象类型<br>if (![type hasPrefix:@”NS”]) {<br>// 将对象名转换为对象的类型，将新的对象字典转模型（递归）<br>Class class = NSClassFromString(type);<br>value = [class objectWithDict:value];<br>}<br>}</p>
+<p>// 将字典中的值设置到模型上<br>[self setValue:value forKeyPath:key];<br>}<br>free(ivars);<br>c = [c superclass];<br>}<br>}</p>
+<ul>
+<li>(instancetype )objectWithDict:(NSDictionary <em>)dict {<br>NSObject </em>obj = [[self alloc]init];<br>[obj setDict:dict];<br>return obj;<br>}<br>第三种情况是模型的属性是一个数组，数组中是一个个模型对象，例如下面的数据我就可以通过books[0].name获取到C语言程序设计</li>
+</ul>
+<p>JSON数据<br>我们既然能获取到属性类型，那就可以拦截到模型的那个数组属性，进而对数组中每个模型遍历并字典转模型，但是我们不知道数组中的模型都是什么类型，我们可以声明一个方法，该方法目的不是让其调用，而是让其实现并返回模型的类型。<br>这块语言可能解释不太清楚，可以参考我的demo，直接运行即可。</p>
+<p>NSObject+JSONExtension.h<br>// 返回数组中都是什么类型的模型对象</p>
+<ul>
+<li>(NSString *)arrayObjectClass ;<br>NSObject+JSONExtension.m<br>#import “NSObject+JSONExtension.h”<br>#import <objc runtime.h=""></objc></li>
+</ul>
+<p>@implementation NSObject (JSONExtension)</p>
+<ul>
+<li>(void)setDict:(NSDictionary *)dict {</li>
+</ul>
+<p>Class c = self.class;<br>while (c &amp;&amp;c != [NSObject class]) {</p>
+<p>unsigned int outCount = 0;<br>Ivar <em>ivars = class_copyIvarList(c, &amp;outCount);<br>for (int i = 0; i &lt; outCount; i++) {<br>Ivar ivar = ivars[i];<br>NSString </em>key = [NSString stringWithUTF8String:ivar_getName(ivar)];</p>
+<p>// 成员变量名转为属性名（去掉下划线 _ ）<br>key = [key substringFromIndex:1];<br>// 取出字典的值<br>id value = dict[key];</p>
+<p>// 如果模型属性数量大于字典键值对数理，模型属性会被赋值为nil而报错<br>if (value == nil) continue;</p>
+<p>// 获得成员变量的类型<br>NSString *type = [NSString stringWithUTF8String:ivar_getTypeEncoding(ivar)];</p>
+<p>// 如果属性是对象类型<br>NSRange range = [type rangeOfString:@”@”];<br>if (range.location != NSNotFound) {<br>// 那么截取对象的名字（比如@”Dog”，截取为Dog）<br>type = [type substringWithRange:NSMakeRange(2, type.length - 3)];<br>// 排除系统的对象类型<br>if (![type hasPrefix:@”NS”]) {<br>// 将对象名转换为对象的类型，将新的对象字典转模型（递归）<br>Class class = NSClassFromString(type);<br>value = [class objectWithDict:value];</p>
+<p>}else if ([type isEqualToString:@”NSArray”]) {</p>
+<p>// 如果是数组类型，将数组中的每个模型进行字典转模型，先创建一个临时数组存放模型<br>NSArray <em>array = (NSArray </em>)value;<br>NSMutableArray *mArray = [NSMutableArray array];</p>
+<p>// 获取到每个模型的类型<br>id class ;<br>if ([self respondsToSelector:@selector(arrayObjectClass)]) {</p>
+<p>NSString *classStr = [self arrayObjectClass];<br>class = NSClassFromString(classStr);<br>}<br>// 将数组中的所有模型进行字典转模型<br>for (int i = 0; i &lt; array.count; i++) {<br>[mArray addObject:[class objectWithDict:value[i]]];<br>}</p>
+<p>value = mArray;<br>}<br>}</p>
+<p>// 将字典中的值设置到模型上<br>[self setValue:value forKeyPath:key];<br>}<br>free(ivars);<br>c = [c superclass];<br>}<br>}</p>
+<ul>
+<li>(instancetype )objectWithDict:(NSDictionary <em>)dict {<br>NSObject </em>obj = [[self alloc]init];<br>[obj setDict:dict];<br>return obj;<br>}</li>
+</ul>
+<p>@end</p>
 <p>文／滕先洪（简书作者）<br>原文链接：<a href="http://www.jianshu.com/p/ab966e8a82e2" target="_blank" rel="external">http://www.jianshu.com/p/ab966e8a82e2</a><br>著作权归作者所有，转载请联系作者获得授权，并标注“简书作者”。</p>
 
       
@@ -550,7 +526,7 @@ runtime的资料网上有很多了，部分有些晦涩难懂，我通过自己�
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#什么是runtime？"><span class="nav-number">2.</span> <span class="nav-text">什么是runtime？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#如何应用运行时？"><span class="nav-number">3.</span> <span class="nav-text">如何应用运行时？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#下面我通过demo-我一个个来讲解"><span class="nav-number">3.1.</span> <span class="nav-text">下面我通过demo 我一个个来讲解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#一、交换两个方法的实现，拦截系统自带的方法调用功能"><span class="nav-number">3.1.0.1.</span> <span class="nav-text">一、交换两个方法的实现，拦截系统自带的方法调用功能</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#案例1：方法简单的交换"><span class="nav-number">3.1.0.1.0.1.</span> <span class="nav-text">案例1：方法简单的交换</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#案例2：拦截系统方法"><span class="nav-number">3.1.0.1.0.2.</span> <span class="nav-text">案例2：拦截系统方法</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#注意：自定义方法中最后一定要再调用一下系统的方法，让其有加载图片的功能，但是由于方法交换，系统的方法名已经变成了我们自定义的方法名（有点绕，就是用我们的名字能调用系统的方法，用系统的名字能调用我们的方法），这就实现了系统方法的拦截！"><span class="nav-number">3.1.0.1.0.3.</span> <span class="nav-text">注意：自定义方法中最后一定要再调用一下系统的方法，让其有加载图片的功能，但是由于方法交换，系统的方法名已经变成了我们自定义的方法名（有点绕，就是用我们的名字能调用系统的方法，用系统的名字能调用我们的方法），这就实现了系统方法的拦截！</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二、在分类中设置属性，给任何一个对象设置属性"><span class="nav-number">3.1.0.2.</span> <span class="nav-text">二、在分类中设置属性，给任何一个对象设置属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三、获得一个类的所有成员变量"><span class="nav-number">3.1.0.3.</span> <span class="nav-text">三、获得一个类的所有成员变量</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#案例1：获取Person类中所有成员变量的名字和类型"><span class="nav-number">3.1.0.3.0.1.</span> <span class="nav-text">案例1：获取Person类中所有成员变量的名字和类型</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#案例2：利用runtime-获取所有属性来重写归档解档方法"><span class="nav-number">3.1.0.3.0.2.</span> <span class="nav-text">案例2：利用runtime 获取所有属性来重写归档解档方法</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#注意，下面的代码我换了一个方法名（不然会覆盖系统原来的方法！），加了一个忽略属性方法是否被实现的判断，并加上了对父类属性的归解档循环。"><span class="nav-number">3.1.0.3.0.3.</span> <span class="nav-text">注意，下面的代码我换了一个方法名（不然会覆盖系统原来的方法！），加了一个忽略属性方法是否被实现的判断，并加上了对父类属性的归解档循环。</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#案例3：利用runtime-获取所有属性来进行字典转模型"><span class="nav-number">3.1.0.3.0.4.</span> <span class="nav-text">案例3：利用runtime 获取所有属性来进行字典转模型</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+              <p class="post-toc-empty">此文章未包含目录</p>
             
           </div>
         </section>
@@ -577,7 +553,7 @@ runtime的资料网上有很多了，部分有些晦涩难懂，我通过自己�
 </div>
 
 <div class="powered-by">
-  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+   阅读笔记 
 </div>
 
 <div class="theme-info">
